@@ -4,7 +4,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -24,7 +24,7 @@ export class HomeComponent {
 
   constructor(private fb: FormBuilder) {
     this.formularioDoJogador = this.fb.group({
-      nome: [''],
+      nome: ['', Validators.required],
       apelido: [''],
       dataNascimento: [''],
     });
@@ -35,6 +35,8 @@ export class HomeComponent {
       this.dataSource.data.push(this.formularioDoJogador.value);
       this.dataSource.data = [...this.dataSource.data]; 
       this.formularioDoJogador.reset();
+    }else{
+      window.alert('Preencha o nome do jogador!')
     }
   }
   }
