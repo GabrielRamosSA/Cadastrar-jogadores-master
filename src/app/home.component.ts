@@ -26,7 +26,7 @@ export class HomeComponent {
     this.formularioDoJogador = this.fb.group({
       nome: ['', Validators.required],
       apelido: [''],
-      dataNascimento: [''],
+      dataNascimento: ['', Validators.required],
     });
   }
 
