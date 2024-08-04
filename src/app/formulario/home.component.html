@@ -1,0 +1,39 @@
+<div id="container">
+  <form [formGroup]="formGroup" id="form-container" (ngSubmit)="onSubmit()">
+    <div id="grupo-de-input">
+  <label for="nome"><strong>Nome</strong></label>
+  <input type="text" pInputText formControlName="nome" style="height: 40px;" />
+  <label for="apelido"><strong>Apelido</strong></label>
+  <input type="text" pInputText formControlName="apelido"style="height: 40px;" />
+  <label for="dataNascimento"><strong>Data de nascimento</strong></label>
+  
+  <p-calendar formControlName="dataNascimento" dateFormat="dd/mm/yy" />
+  <label for="selecionarNivel"><strong>Nivel</strong></label>
+ <p-dropdown 
+        formControlName="selecionarNivel" 
+        [options]="niveis" 
+        optionLabel="nivel" 
+        placeholder="Nivel">
+    </p-dropdown>
+    <label for="goleiro"><strong>Goleiro</strong></label>
+    <p-checkbox 
+            formControlName="goleiro" 
+            value="Sim" />
+            <label for="dataEntrada"><strong>Data de entrada</strong></label>
+        <p-calendar formControlName="dataEntrada" dateFormat="dd/mm/yy"></p-calendar>
+        <label for="obs"><strong>Observção</strong></label>
+        <div id="text-area">
+        <textarea 
+        rows="5"
+        cols="30" 
+        pInputTextarea 
+        formControlName="obs">
+
+    </textarea>
+  </div>
+        <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+        <p-button (onClick)="show()"  type="submit" mat-flat-button color="primary">Adicionar</p-button>
+        <p-button  type="submit" mat-flat-button color="primary"><a routerlink="/tabela">Tabela</a></p-button>
+      </div>
+  </form>
+</div>
