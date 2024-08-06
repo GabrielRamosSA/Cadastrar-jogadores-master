@@ -33,7 +33,7 @@
   </div>
         <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
         <p-button (onClick)="show()"  type="submit" mat-flat-button color="primary">Adicionar</p-button>
-        <p-button  type="submit" mat-flat-button color="primary"><a routerlink="/tabela">Tabela</a></p-button>
+        <p-button  mat-flat-button color="primary" routerLink="/tabela" (click)="tabela()">Tabela</p-button>
       </div>
   </form>
 </div>

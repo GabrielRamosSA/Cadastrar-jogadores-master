@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTableModule} from '@angular/material/table';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup, FormsModule, FormControl,  ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PrimeNGConfig } from 'primeng/api';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -42,32 +42,32 @@ interface Jogador {
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet,
-     MatButtonModule,
-     MatInputModule, 
-     ReactiveFormsModule, 
-     MatTableModule, 
-     MatDatepickerModule,
-     NgbPaginationModule,
-     NgbAlertModule,
-     NgbModule,
-     MatCheckboxModule,
-     MatFormFieldModule,
-     MatSelectModule,
-     InputGroupModule,
-     InputGroupAddonModule,
-     InputTextModule,
-     FormsModule,
-     FloatLabelModule,
-     CalendarModule,
-     DropdownModule,
-     CheckboxModule,
-     InputTextareaModule,
-     TableModule,
-     ToastModule,
-     RippleModule,
-     ButtonModule
+    MatButtonModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatDatepickerModule,
+    NgbPaginationModule,
+    NgbAlertModule,
+    NgbModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    InputTextModule,
+    FormsModule,
+    FloatLabelModule,
+    CalendarModule,
+    DropdownModule,
+    CheckboxModule,
+    InputTextareaModule,
+    TableModule,
+    ToastModule,
+    RippleModule,
+    ButtonModule
 
-    ],
+  ],
   providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',
@@ -78,7 +78,9 @@ export class HomeComponent {
   formGroup: FormGroup;
   jogadores: Jogador[] = [];
 
-  constructor( private messageService: MessageService) {
+  constructor(
+    private messageService: MessageService,
+    private router: Router) {
     const today = new Date();
     this.formGroup = new FormGroup({
       nome: new FormControl<string | null>(null),
@@ -92,7 +94,7 @@ export class HomeComponent {
   }
   show() {
     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Jogador foi adicionado' });
- }
+  }
   ngOnInit() {
     this.niveis = [
       { nivel: '1' },
@@ -102,7 +104,7 @@ export class HomeComponent {
       { nivel: '5' },
       { nivel: '6' }
     ];
-    
+
   }
 
   onSubmit() {
@@ -123,5 +125,9 @@ export class HomeComponent {
       dataEntrada: new Date()
     });
   }
- 
+
+  tabela(){
+    this.router.navigateByUrl('/tabela')
+  }
+
 }
