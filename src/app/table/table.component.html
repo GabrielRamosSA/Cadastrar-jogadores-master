@@ -1,1 +1,124 @@
-<h1>aaaaa</h1>
+<div id="container-tabela">
+<div id="tabela">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-table [value]="jogadores"  responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nome">Nome <p-sortIcon field="nome" /></th>
+        <th pSortableColumn="apelido">Apelido <p-sortIcon field="apelido" /></th>
+        <th pSortableColumn="dataNascimento">Data de Nascimento <p-sortIcon field="dataNascimento" /></th>
+        <th pSortableColumn="selecionarNivel.nivel">Nível <p-sortIcon field="selecionarNivel.nivel" /></th>
+        <th pSortableColumn="goleiro">Goleiro <p-sortIcon field="goleiro" /></th>
+        <th pSortableColumn="convidadoPor">Convidado por <p-sortIcon field="convidadoPor" /></th>
+        <th pSortableColumn="dataEntrada">Data de Entrada <p-sortIcon field="dataEntrada" /></th>
+        <th pSortableColumn="obs">Observações <p-sortIcon field="obs" /></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-jogador let-i="rowIndex">
+      <tr>
+        <td>{{ jogador.nome }}</td>
+        <td>{{ jogador.apelido }}</td>
+        <td>{{ jogador.dataNascimento }}</td>
+        <td>{{ jogador.selecionarNivel.nivel }}</td>
+        <td>{{ jogador.goleiro }}</td>
+        <td>{{ jogador.convidadoPor }}</td>
+        <td>{{ jogador.dataEntrada | date:'dd-MM-yyyy' }}</td>
+        <td>{{ jogador.obs }}</td>
+        <td>
+          <div style="display: flex;">
+            <button style="background: white; border: none; margin-right: 10px;" (click)="confirm2($event, i)">
+              <i class="pi pi-times"></i>
+            </button>
+            <button (click)="showDialog(i)" style="background: none; border: none;">
+              <i class="pi pi-pencil"></i>
+            </button>
+          
+            <!-- Caixa de diálogo para edição -->
+            <p-dialog header="Editar Jogador" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem', height: '70rem'}" [breakpoints]="{'560px': '25rem'}" >
+              <div id="container-pai">
+                <div id="container">
+                  <form [formGroup]="formGroup" id="form-container" (ngSubmit)="onSubmit()">
+                    <div id="grupo-de-input">
+                    
+                      <label for="nome"><strong>Nome</strong></label>
+                      <input type="text" pInputText formControlName="nome" style="height: 50px;" />
+
+                    
+                      <label for="apelido"><strong>Apelido</strong></label>
+                      <input type="text" pInputText formControlName="apelido" style="height: 50px;" />
+
+                     
+                      <label for="dataNascimento"><strong>Data de nascimento</strong></label>
+                      <p-calendar formControlName="dataNascimento" placeholder="DD/MM/AA" dateFormat="dd/mm/yy"></p-calendar>
+
+                     
+                      <label for="selecionarNivel"><strong>Nivel</strong></label>
+                      <p-dropdown 
+                        formControlName="selecionarNivel" 
+                        class="nivel-dropdown"
+                        [options]="niveis" 
+                        optionLabel="nivel" 
+                        placeholder="Nivel">
+                      </p-dropdown>
+
+                   
+                      <label for="goleiro"><strong>Goleiro</strong></label>
+                      <p-checkbox 
+                        label="Sim"
+                        formControlName="goleiro" 
+                        value="Sim">
+                      </p-checkbox>
+
+                    
+                      <div id="convidados">  
+                        <label for="convidadoPor"><strong>Convidado por</strong></label>
+                        <p-dropdown 
+                          formControlName="convidadoPor" 
+                          [options]="nomesCadastrados" 
+                          placeholder="Selecione quem o convidou">
+                        </p-dropdown>
+                      </div>
+
+                      
+                      <label for="dataEntrada"><strong>Data de entrada</strong></label>
+                      <p-calendar formControlName="dataEntrada" dateFormat="dd/mm/yy"></p-calendar>
+
+                      
+                      <label for="obs"><strong>Observação</strong></label>
+                      <div id="text-area">
+                        <textarea 
+                          rows="5"
+                          cols="30" 
+                          pInputTextarea 
+                          class="area-de-texto"
+                          formControlName="obs">
+                        </textarea>
+                      </div>
+
+                     
+                      <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+
+                      
+                      <div id="botoes">
+                        <p-button type="submit" mat-flat-button color="primary">Alterar</p-button>
+                        <p-button mat-flat-button color="primary" (click)="visible=false">Cancelar</p-button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </p-dialog>
+          </div>
+        </td>
+      </tr>
+      
+    </ng-template>
+    
+  </p-table>
+  <p-button (onClick)="voltar()" mat-flat-button="primary">Voltar</p-button>
+</div>
+</div>
+
+

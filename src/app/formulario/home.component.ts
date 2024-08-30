@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,19 +26,13 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputMaskModule } from 'primeng/inputmask';
 
 interface Nivel {
   nivel: string;
 }
-interface Jogador {
-  nome: string;
-  apelido: string;
-  dataNascimento: Date;
-  selecionarNivel: Nivel;
-  goleiro: string;
-  dataEntrada: Date;
-  obs: string;
-}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -65,69 +60,93 @@ interface Jogador {
     TableModule,
     ToastModule,
     RippleModule,
-    ButtonModule
-
+    ButtonModule,
+    CommonModule,
+    ConfirmDialogModule,
+    InputMaskModule,
   ],
   providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
+
 export class HomeComponent {
-  niveis: Nivel[] = [];
-  formGroup: FormGroup;
-  jogadores: Jogador[] = [];
+    niveis: Nivel[] = [];
+    formGroup: FormGroup;
+    nomesCadastrados: string[] = [];
+    value: string | undefined;
+  
+    constructor(
+      private messageService: MessageService,
+      private router: Router) {
+      const today = new Date();
+      this.formGroup = new FormGroup({
+        nome: new FormControl<string | null>(null, Validators.required),
+        apelido: new FormControl<string | null>(null),
+        dataNascimento: new FormControl< | null>(null, Validators.required),
+        selecionarNivel: new FormControl<Nivel | null>(null, Validators.required),
+        goleiro: new FormControl<string | null>(null),
+        dataEntrada: new FormControl(today),
+        obs: new FormControl<string | null>(null),
+        convidadoPor: new FormControl<string | null>(null)  
+      });
+    }
+  
+    ngOnInit() {
+      this.niveis = [
+        { nivel: '1' },
+        { nivel: '2' },
+        { nivel: '3' },
+        { nivel: '4' },
+        { nivel: '5' },
+        { nivel: '6' }
+      ];
+  
 
-  constructor(
-    private messageService: MessageService,
-    private router: Router) {
-    const today = new Date();
-    this.formGroup = new FormGroup({
-      nome: new FormControl<string | null>(null),
-      apelido: new FormControl<string | null>(null),
-      dataNascimento: new FormControl<Date | null>(null),
-      selecionarNivel: new FormControl<Nivel | null>(null),
-      goleiro: new FormControl<string | null>(null),
-      dataEntrada: new FormControl(today),
-      obs: new FormControl<string | null>(null),
-    });
+      const storedJogadores = localStorage.getItem('jogadores');
+      if (storedJogadores) {
+        const jogadores = JSON.parse(storedJogadores);
+        this.nomesCadastrados = jogadores.map((jogador: any) => jogador.nome);
+      }
+    }
+  
+    onSubmit() {
+      if (this.formGroup.valid) {
+        const jogador = {
+          nome: this.formGroup.value.nome!,
+          apelido: this.formGroup.value.apelido!,
+          dataNascimento: this.formGroup.value.dataNascimento!,
+          selecionarNivel: this.formGroup.value.selecionarNivel!,
+          goleiro: this.formGroup.value.goleiro!,
+          dataEntrada: this.formGroup.value.dataEntrada!,
+          obs: this.formGroup.value.obs!,
+          convidadoPor: this.formGroup.value.convidadoPor! 
+        };
+  
+        let jogadores = [];
+        const storedJogadores = localStorage.getItem('jogadores');
+        if (storedJogadores) {
+          jogadores = JSON.parse(storedJogadores);
+        }
+  
+        jogadores.push(jogador);
+        localStorage.setItem('jogadores', JSON.stringify(jogadores));
+  
+    
+        this.nomesCadastrados.push(jogador.nome);
+        
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Você foi cadastrado!' });
+        this.formGroup.reset({
+          dataEntrada: new Date()
+        });
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Preencha o formulário corretamente' });
+      }
+    }
+  
+    tabela() {
+      this.router.navigateByUrl('/tabela');
+    }
+  
   }
-  show() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Jogador foi adicionado' });
-  }
-  ngOnInit() {
-    this.niveis = [
-      { nivel: '1' },
-      { nivel: '2' },
-      { nivel: '3' },
-      { nivel: '4' },
-      { nivel: '5' },
-      { nivel: '6' }
-    ];
-
-  }
-
-  onSubmit() {
-    const formData = this.formGroup.value;
-
-    const jogador: Jogador = {
-      nome: formData.nome,
-      apelido: formData.apelido,
-      dataNascimento: formData.dataNascimento,
-      selecionarNivel: formData.selecionarNivel,
-      goleiro: formData.goleiro,
-      dataEntrada: formData.dataEntrada,
-      obs: formData.obs
-    };
-
-    this.jogadores = [...this.jogadores, jogador];
-    this.formGroup.reset({
-      dataEntrada: new Date()
-    });
-  }
-
-  tabela(){
-    this.router.navigateByUrl('/tabela')
-  }
-
-}

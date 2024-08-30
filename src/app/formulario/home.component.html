@@ -1,39 +1,72 @@
-<div id="container">
-  <form [formGroup]="formGroup" id="form-container" (ngSubmit)="onSubmit()">
-    <div id="grupo-de-input">
-  <label for="nome"><strong>Nome</strong></label>
-  <input type="text" pInputText formControlName="nome" style="height: 40px;" />
-  <label for="apelido"><strong>Apelido</strong></label>
-  <input type="text" pInputText formControlName="apelido"style="height: 40px;" />
-  <label for="dataNascimento"><strong>Data de nascimento</strong></label>
-  
-  <p-calendar formControlName="dataNascimento" dateFormat="dd/mm/yy" />
-  <label for="selecionarNivel"><strong>Nivel</strong></label>
- <p-dropdown 
-        formControlName="selecionarNivel" 
-        [options]="niveis" 
-        optionLabel="nivel" 
-        placeholder="Nivel">
-    </p-dropdown>
-    <label for="goleiro"><strong>Goleiro</strong></label>
-    <p-checkbox 
-            formControlName="goleiro" 
-            value="Sim" />
-            <label for="dataEntrada"><strong>Data de entrada</strong></label>
-        <p-calendar formControlName="dataEntrada" dateFormat="dd/mm/yy"></p-calendar>
-        <label for="obs"><strong>Observção</strong></label>
-        <div id="text-area">
-        <textarea 
-        rows="5"
-        cols="30" 
-        pInputTextarea 
-        formControlName="obs">
+<div id="container-pai">
+  <div id="container">
+    <form [formGroup]="formGroup" id="form-container" (ngSubmit)="onSubmit()">
+      <div id="grupo-de-input">
 
-    </textarea>
-  </div>
-        <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
-        <p-button (onClick)="show()"  type="submit" mat-flat-button color="primary">Adicionar</p-button>
-        <p-button  mat-flat-button color="primary" routerLink="/tabela" (click)="tabela()">Tabela</p-button>
+       
+        <label for="nome"><strong>Nome</strong></label>
+        <input type="text" pInputText formControlName="nome" style="height: 50px;" />
+
+      
+        <label for="apelido"><strong>Apelido</strong></label>
+        <input type="text" pInputText formControlName="apelido" style="height: 50px;" />
+
+      
+        <label for="dataNascimento"><strong>Data de nascimento</strong></label>
+        <p-inputMask formControlName="dataNascimento" mask="99/99/9999" 
+        placeholder="dd/mm/aaaa" 
+        slotChar="dd/mm/aaaa"
+        [(ngModel)]="value"/> 
+
+       
+        <label for="selecionarNivel"><strong>Nivel</strong></label>
+        <p-dropdown 
+          formControlName="selecionarNivel" 
+          [options]="niveis" 
+          optionLabel="nivel" 
+          placeholder="Nivel">
+        </p-dropdown>
+
+      
+        <label for="goleiro"><strong>Goleiro</strong></label>
+        <p-checkbox 
+          label="Sim"
+          formControlName="goleiro" 
+          value="Sim">
+        </p-checkbox>
+        
+       <div id="convidados">  
+        <label for="convidadoPor"><strong>Convidado por</strong></label>
+        <p-dropdown 
+          formControlName="convidadoPor" 
+          [options]="nomesCadastrados" 
+          placeholder="Selecione quem o convidou">
+        </p-dropdown>
       </div>
-  </form>
+        
+        <label for="dataEntrada"><strong>Data de entrada</strong></label>
+        <p-calendar formControlName="dataEntrada" dateFormat="dd/mm/yy"></p-calendar>
+
+      
+        <label for="obs"><strong>Observação</strong></label>
+        <div id="text-area">
+          <textarea 
+            rows="5"
+            cols="30" 
+            pInputTextarea 
+            formControlName="obs">
+          </textarea>
+        </div>
+
+      
+        <p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+
+        
+        <div id="botoes">
+          <p-button type="submit" mat-flat-button color="primary">Adicionar</p-button>
+          <p-button mat-flat-button color="primary" routerLink="/tabela" (click)="tabela()">Tabela</p-button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
